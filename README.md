@@ -12,9 +12,9 @@ the budget as well.
 
 Available tools:
 * list all budgets
+* Get specific budget
 
 Next:
-* Get specific budget
 * Get budget categories
 
 
