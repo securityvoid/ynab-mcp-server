@@ -1,0 +1,29 @@
+{
+  "name": "ynab-mcp-server",
+  "version": "0.0.1",
+  "description": "ynab-mcp-server MCP server",
+  "author": "Caleb LeNoir <caleb.lenoir@hey.com>",
+  "type": "module",
+  "bin": {
+    "ynab-mcp-server": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc && mcp-build",
+    "prepare": "npm run build",
+    "watch": "tsc --watch",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@types/axios": "^0.14.4",
+    "axios": "^1.8.4",
+    "mcp-framework": "^0.1.29",
+    "ynab": "^2.9.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.24",
+    "typescript": "^5.3.3"
+  }
+}
