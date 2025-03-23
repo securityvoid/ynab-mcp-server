@@ -26,7 +26,7 @@ class ListBudgetsTool extends MCPTool {
         name: budget.name,
       }));
 
-      return budgets.join("\n\n");
+      return budgets;
     } catch (error: unknown) {
       logger.error(`Error listing budgets: ${JSON.stringify(error)}`);
       if (error instanceof AxiosError) {
