@@ -3,3 +3,4 @@ node_modules
 .goosehints
 .DS_Store
 dist
+logs

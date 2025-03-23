@@ -45,7 +45,16 @@ ynab-mcp-server/
 
 The YNAB sdk describes the available api endpoints: https://github.com/ynab/ynab-sdk-js.
 
-The project comes with an example tool in `src/tools/ListBudgetsTool.ts`. You can add more tools using the CLI:
+YNAB open api specification is here: https://api.ynab.com/papi/open_api_spec.yaml. This can
+be used to prompt an AI to generate a new tool. Example prompt for Cursor Agent:
+
+```
+create a new tool based on the readme and this openapi doc: @https://api.ynab.com/papi/open_api_spec.yaml
+
+The new tool should get the details for a single budget
+```
+
+You can add more tools using the CLI:
 
 ```bash
 # Add a new tool

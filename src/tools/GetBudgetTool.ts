@@ -1,8 +1,8 @@
-import { MCPTool } from "mcp-framework";
-import { logger } from "mcp-framework";
+import { MCPTool, logger } from "mcp-framework";
 import { AxiosError } from "axios";
-import { api } from "../ynab";
+import * as ynab from "ynab";
 import { z } from "zod";
+
 
 interface BudgetDetail {
   id: string;
@@ -46,10 +46,17 @@ class GetBudgetTool extends MCPTool<GetBudgetInput> {
     },
   };
 
+  api: ynab.API;
+
+  constructor() {
+    super();
+    this.api = new ynab.API(process.env.YNAB_API_TOKEN || "");
+  }
+
   async execute(input: GetBudgetInput) {
     try {
       logger.info(`Getting budget ${input.budget_id}`);
-      const response = await api.budgets.getBudgetById(input.budget_id);
+      const response = await this.api.budgets.getBudgetById(input.budget_id);
       return response.data.budget;
     } catch (error: unknown) {
       logger.error(`Error getting budget ${input.budget_id}: ${error}`);

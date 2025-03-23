@@ -1,21 +1,6 @@
-import { MCPTool } from "mcp-framework";
+import { MCPTool, logger } from "mcp-framework";
 import { AxiosError } from "axios";
-import { api } from "../ynab";
-
-interface Budget {
-  id: string;
-  name: string;
-  last_modified_on: string;
-  first_month: string;
-  last_month: string;
-}
-
-interface BudgetsResponse {
-  data: {
-    budgets: Budget[];
-  };
-}
-
+import * as ynab from "ynab";
 
 class ListBudgetsTool extends MCPTool {
   name = "ynab_list_budgets";
@@ -23,12 +8,27 @@ class ListBudgetsTool extends MCPTool {
 
   schema = {};
 
+  api: ynab.API;
+
+  constructor() {
+    super();
+    this.api = new ynab.API(process.env.YNAB_API_TOKEN || "");
+  }
+
   async execute() {
     try {
-      const budgetsResponse = await api.budgets.getBudgets();
+      logger.info("Listing budgets");
+      const budgetsResponse = await this.api.budgets.getBudgets();
+      logger.info(`Found ${budgetsResponse.data.budgets.length} budgets`);
 
-      return budgetsResponse.data.budgets;
+      const budgets = budgetsResponse.data.budgets.map((budget) => ({
+        id: budget.id,
+        name: budget.name,
+      }));
+
+      return budgets.join("\n\n");
     } catch (error: unknown) {
+      logger.error(`Error listing budgets: ${JSON.stringify(error)}`);
       if (error instanceof AxiosError) {
         throw new Error(
           `YNAB API Error: ${
