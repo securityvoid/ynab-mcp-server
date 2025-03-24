@@ -17,6 +17,10 @@ class ListBudgetsTool extends MCPTool {
 
   async execute() {
     try {
+      if (!process.env.YNAB_API_TOKEN) {
+        return "YNAB API Token is not set";
+      }
+
       logger.info("Listing budgets");
       const budgetsResponse = await this.api.budgets.getBudgets();
       logger.info(`Found ${budgetsResponse.data.budgets.length} budgets`);
@@ -29,15 +33,7 @@ class ListBudgetsTool extends MCPTool {
       return budgets;
     } catch (error: unknown) {
       logger.error(`Error listing budgets: ${JSON.stringify(error)}`);
-      if (error instanceof AxiosError) {
-        throw new Error(
-          `YNAB API Error: ${
-            error.response?.data?.error?.detail || error.message
-          }`
-        );
-      } else {
-        throw new Error(`Unknown error: ${error}`);
-      }
+      return `Error listing budgets: ${JSON.stringify(error)}`;
     }
   }
 }

@@ -96,15 +96,7 @@ class GetBudgetTool extends MCPTool<GetBudgetInput> {
     } catch (error: unknown) {
       logger.error(`Error getting budget ${input.budget_id}:`);
       logger.error(JSON.stringify(error, null, 2));
-      if (error instanceof AxiosError) {
-        throw new Error(
-          `YNAB API Error: ${
-            error.response?.data?.error?.detail || error.message
-          }`
-        );
-      } else {
-        throw new Error(`Unknown error: ${error}`);
-      }
+      return `Error getting budget ${input.budget_id}: ${JSON.stringify(error)}`;
     }
   }
 }
