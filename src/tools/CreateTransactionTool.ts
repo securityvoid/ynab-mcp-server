@@ -20,15 +20,11 @@ class CreateTransactionTool extends MCPTool<CreateTransactionInput> {
   name = "create_transaction";
   description = "Creates a new transaction in your YNAB budget. Either payee_id or payee_name must be provided in addition to the other required fields.";
 
-  private ynabAPI: ynab.API;
+  private api: ynab.API;
 
   constructor() {
     super();
-    const accessToken = process.env.YNAB_ACCESS_TOKEN;
-    if (!accessToken) {
-      throw new Error("YNAB_ACCESS_TOKEN environment variable is required");
-    }
-    this.ynabAPI = new ynab.API(accessToken);
+    this.api = new ynab.API(process.env.YNAB_API_TOKEN || "");
   }
 
   schema = {
@@ -58,23 +54,23 @@ class CreateTransactionTool extends MCPTool<CreateTransactionInput> {
     },
     categoryId: {
       type: z.string().optional(),
-      description: "The category id for the transaction",
+      description: "The category id for the transaction (optional)",
     },
     memo: {
       type: z.string().optional(),
-      description: "A memo/note for the transaction",
+      description: "A memo/note for the transaction (optional)",
     },
     cleared: {
       type: z.boolean().optional(),
-      description: "Whether the transaction is cleared",
+      description: "Whether the transaction is cleared (optional, defaults to false)",
     },
     approved: {
       type: z.boolean().optional(),
-      description: "Whether the transaction is approved",
+      description: "Whether the transaction is approved (optional, defaults to false)",
     },
     flagColor: {
       type: z.string().optional(),
-      description: "The transaction flag color (red, orange, yellow, green, blue, purple)",
+      description: "The transaction flag color (red, orange, yellow, green, blue, purple) (optional)",
     },
   };
 
@@ -99,7 +95,7 @@ class CreateTransactionTool extends MCPTool<CreateTransactionInput> {
         }
       };
 
-      const response = await this.ynabAPI.transactions.createTransaction(
+      const response = await this.api.transactions.createTransaction(
         input.budgetId,
         transaction
       );
