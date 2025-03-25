@@ -3,34 +3,6 @@ import { AxiosError } from "axios";
 import * as ynab from "ynab";
 import { z } from "zod";
 
-
-interface BudgetDetail {
-  id: string;
-  name: string;
-  last_modified_on: string;
-  first_month: string;
-  last_month: string;
-  currency_format: {
-    iso_code: string;
-    example_format: string;
-    decimal_digits: number;
-    decimal_separator: string;
-    symbol_first: boolean;
-    group_separator: string;
-    currency_symbol: string;
-    display_symbol: boolean;
-  };
-  accounts: Array<{
-    id: string;
-    name: string;
-    type: string;
-    balance: number;
-    cleared_balance: number;
-    uncleared_balance: number;
-    closed: boolean;
-  }>;
-}
-
 interface GetBudgetInput {
   budget_id: string;
 }
