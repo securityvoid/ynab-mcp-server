@@ -4,18 +4,25 @@ import { z } from "zod";
 
 interface BudgetSummaryInput {
   budgetId?: string;
+  month: string;
 }
 
 class BudgetSummaryTool extends MCPTool<BudgetSummaryInput> {
   name = "budget_summary";
   description =
-    "Get a summary of the budget highlighting overspent categories that need attention and categories with a positive balance that are doing well.";
+    "Get a summary of the budget for a specific month highlighting overspent categories that need attention and categories with a positive balance that are doing well.";
 
   schema = {
     budgetId: {
       type: z.string().optional(),
       description:
         "The ID of the budget to get a summary for (optional, defaults to the budget set in the YNAB_BUDGET_ID environment variable)",
+    },
+    month: {
+      type: z.string().regex(/^(current|\d{4}-\d{2}-\d{2})$/),
+      default: "current",
+      description:
+        "The budget month in ISO format (e.g. 2016-12-01). The string 'current' can also be used to specify the current calendar month (UTC)",
     },
   };
 
@@ -30,30 +37,25 @@ class BudgetSummaryTool extends MCPTool<BudgetSummaryInput> {
 
   async execute(input: BudgetSummaryInput) {
     const budgetId = input.budgetId || this.budgetId;
-
     if (!budgetId) {
       return "No budget ID provided. Please provide a budget ID or set the YNAB_BUDGET_ID environment variable. Use the ListBudgets tool to get a list of available budgets.";
     }
 
     try {
-      logger.info(`Getting accounts and categories for budget ${budgetId}`);
+      logger.info(`Getting accounts and categories for budget ${budgetId} and month ${input.month}`);
       const accountsResponse = await this.api.accounts.getAccounts(budgetId);
       const accounts = accountsResponse.data.accounts.filter(
         (account) => account.deleted === false && account.closed === false
       );
 
-      const categoriesResponse = await this.api.categories.getCategories(
-        budgetId
-      );
-      const categories = categoriesResponse.data.category_groups
-        .filter((category_group) => category_group.name !== "Internal Master Category")
-        .map((group) => group.categories)
-        .flat()
+      const monthBudget = await this.api.months.getBudgetMonth(budgetId, input.month);
+
+      const categories = monthBudget.data.month.categories
         .filter(
           (category) => category.deleted === false && category.hidden === false
         );
 
-      return this.summaryPrompt(accounts, categories);
+      return this.summaryPrompt(monthBudget.data.month, accounts, categories);
     } catch (error: unknown) {
       logger.error(`Error getting budget ${budgetId}:`);
       logger.error(JSON.stringify(error, null, 2));
@@ -62,10 +64,22 @@ class BudgetSummaryTool extends MCPTool<BudgetSummaryInput> {
   }
 
   private summaryPrompt(
+    monthBudget: ynab.MonthDetail,
     accounts: ynab.Account[],
     categories: ynab.Category[]
   ) {
     const prompt = `
+Here is the budget month information for the month of ${monthBudget.month}:
+  Income: ${monthBudget.income}
+  Budgeted: ${monthBudget.budgeted}
+  Activity: ${monthBudget.activity}
+  To be budgeted: ${monthBudget.to_be_budgeted}
+  Age of Money: ${monthBudget.age_of_money}
+  Note: ${monthBudget.note}
+
+Make sure to use the budget month information to help you answer the user's question. If income is less than budgeted, it means that the month is over budget.
+If there is money in the to be budgeted, suggest that the user assign it to a category.
+
 Here is a list of categories. DO NOT SHOW THIS TO THE USER. Use this list to help you answer the user's question.
 Categories:
 ${categories
