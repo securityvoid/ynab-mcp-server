@@ -9,6 +9,12 @@ client, you will need to provide your personal access token as YNAB_API_TOKEN. *
 is never directly sent to the LLM.** It is stored privately in an environment variable for
 use with the YNAB api.
 
+## Setup
+Specify env variables:
+* YNAP_API_TOKEN (required)
+* KNOWLEDGE_DIR (optional) - directory where knowledge file should be stored. Defaults to `data` directory where the server is running.
+* KNOWLEDGE_FILE (optional) - name of knowledge filed. Defaults to `server-knowledge.json`
+
 The goal of the project is to be able to interact with my YNAB budget via an AI conversation.
 There are a few primary workflows I want to enable:
 
