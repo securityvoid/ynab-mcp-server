@@ -1,8 +1,9 @@
 import { MCPTool } from "mcp-framework";
 import { z } from "zod";
 import * as ynab from "ynab";
-import Knowledge from "../knowledge.js";
+
 interface CreateTransactionInput {
+  budgetId?: string;
   accountId: string;
   date: string;
   amount: number;
@@ -16,18 +17,23 @@ interface CreateTransactionInput {
 }
 
 class CreateTransactionTool extends MCPTool<CreateTransactionInput> {
-  name = "ynab_create_transaction";
+  name = "create_transaction";
   description = "Creates a new transaction in your YNAB budget. Either payee_id or payee_name must be provided in addition to the other required fields.";
 
   private api: ynab.API;
-  private knowledge: Knowledge;
+  private budgetId: string;
+
   constructor() {
     super();
     this.api = new ynab.API(process.env.YNAB_API_TOKEN || "");
-    this.knowledge = new Knowledge();
+    this.budgetId = process.env.YNAB_BUDGET_ID || "";
   }
 
   schema = {
+    budgetId: {
+      type: z.string().optional(),
+      description: "The id of the budget to create the transaction in (optional, defaults to the budget set in the YNAB_BUDGET_ID environment variable)",
+    },
     accountId: {
       type: z.string(),
       description: "The id of the account to create the transaction in",
@@ -71,9 +77,10 @@ class CreateTransactionTool extends MCPTool<CreateTransactionInput> {
   };
 
   async execute(input: CreateTransactionInput) {
-    const budgetId = this.knowledge.getDefaultBudgetId();
+    const budgetId = input.budgetId || this.budgetId;
+
     if (!budgetId) {
-      throw new Error("No default budget ID found. Please set a default budget ID first.");
+      throw new Error("No budget ID provided. Please provide a budget ID or set the YNAB_BUDGET_ID environment variable.");
     }
 
     if(!input.payeeId && !input.payeeName) {

@@ -3,7 +3,7 @@ import { AxiosError } from "axios";
 import * as ynab from "ynab";
 
 class ListBudgetsTool extends MCPTool {
-  name = "ynab_list_budgets";
+  name = "list_budgets";
   description = "Lists all available budgets from YNAB API";
 
   schema = {};
