@@ -3,7 +3,7 @@ import * as ynab from "ynab";
 import { z } from "zod";
 
 interface GetUnapprovedTransactionsInput {
-  budgetId: string;
+  budgetId?: string;
 }
 
 class GetUnapprovedTransactionsTool extends MCPTool<GetUnapprovedTransactionsInput> {
@@ -13,7 +13,7 @@ class GetUnapprovedTransactionsTool extends MCPTool<GetUnapprovedTransactionsInp
 
   schema = {
     budgetId: {
-      type: z.string(),
+      type: z.string().optional(),
       description: "The ID of the budget to fetch transactions for (optional, defaults to the budget set in the YNAB_BUDGET_ID environment variable)",
     },
   };
@@ -27,7 +27,7 @@ class GetUnapprovedTransactionsTool extends MCPTool<GetUnapprovedTransactionsInp
     this.budgetId = process.env.YNAB_BUDGET_ID || "";
   }
 
-  async execute(input: {budgetId: string}) {
+  async execute(input: GetUnapprovedTransactionsInput) {
     const budgetId = input.budgetId || this.budgetId;
 
     if (!budgetId) {

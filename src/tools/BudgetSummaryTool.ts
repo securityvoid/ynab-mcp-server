@@ -2,7 +2,11 @@ import { MCPTool, logger } from "mcp-framework";
 import * as ynab from "ynab";
 import { z } from "zod";
 
-class BudgetSummaryTool extends MCPTool {
+interface BudgetSummaryInput {
+  budgetId?: string;
+}
+
+class BudgetSummaryTool extends MCPTool<BudgetSummaryInput> {
   name = "budget_summary";
   description =
     "Get a summary of the budget highlighting overspent categories that need attention and categories with a positive balance that are doing well.";
@@ -24,7 +28,7 @@ class BudgetSummaryTool extends MCPTool {
     this.budgetId = process.env.YNAB_BUDGET_ID || "";
   }
 
-  async execute(input: { budgetId: string }) {
+  async execute(input: BudgetSummaryInput) {
     const budgetId = input.budgetId || this.budgetId;
 
     if (!budgetId) {
@@ -71,7 +75,7 @@ Accounts:
 ${accounts
   .map(
     (account) =>
-      `${account.name} (id:${account.id}, type:${account.type}, balance: ${account.balance})`
+      `${account.name} (id:${account.id}, type:${account.type}, balance: ${account.balance / 1000})`
   )
   .join("\n")}
 
@@ -80,7 +84,7 @@ Categories:
 ${categories
   .map(
     (category) =>
-      `${category.name} (id:${category.id}, balance: ${category.balance})`
+      `${category.name} (id:${category.id}, balance: ${category.balance / 1000})`
   )
   .join("\n")}
 
