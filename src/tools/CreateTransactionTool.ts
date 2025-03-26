@@ -42,7 +42,7 @@ class CreateTransactionTool extends MCPTool<CreateTransactionInput> {
     },
     amount: {
       type: z.number(),
-      description: "The amount in milliunits (e.g. 10.99 should be provided as 10990)",
+      description: "The amount in dollars (e.g. 10.99)",
     },
     payeeId: {
       type: z.string().optional(),
@@ -79,12 +79,14 @@ class CreateTransactionTool extends MCPTool<CreateTransactionInput> {
       throw new Error("Either payee_id or payee_name must be provided");
     }
 
+    const milliunitAmount = Math.round(input.amount * 1000);
+
     try {
       const transaction: ynab.PostTransactionsWrapper = {
         transaction: {
           account_id: input.accountId,
           date: input.date,
-          amount: input.amount,
+          amount: milliunitAmount,
           payee_id: input.payeeId,
           payee_name: input.payeeName,
           category_id: input.categoryId,

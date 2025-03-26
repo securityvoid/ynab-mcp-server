@@ -13,9 +13,12 @@ the budget as well.
 Available tools:
 * list all budgets
 * Get specific budget
+* Create a transaction
 
 Next:
-* Get budget categories
+* fix so it isn't dependent on memories mcp, need to store account ids and category ids on initialization
+* move money
+* import transactions
 
 
 ## Quick Start
@@ -49,7 +52,7 @@ YNAB open api specification is here: https://api.ynab.com/papi/open_api_spec.yam
 be used to prompt an AI to generate a new tool. Example prompt for Cursor Agent:
 
 ```
-create a new tool based on the readme and this openapi doc: @https://api.ynab.com/papi/open_api_spec.yaml
+create a new tool based on the readme and this openapi doc: https://api.ynab.com/papi/open_api_spec.yaml
 
 The new tool should get the details for a single budget
 ```
