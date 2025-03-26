@@ -4,16 +4,32 @@ A Model Context Protocol (MCP) server built with mcp-framework. This MCP provide
 for interacting with your YNAB budgets setup at https://ynab.com
 
 In order to have an AI interact with this tool, you will need to get your Personal Access Token
-from YNAB: https://api.ynab.com/#personal-access-tokens
+from YNAB: https://api.ynab.com/#personal-access-tokens. When adding this MCP server to any
+client, you will need to provide your personal access token as YNAB_API_TOKEN. **This token
+is never directly sent to the LLM.** It is stored privately in an environment variable for
+use with the YNAB api.
 
-The goal of the project is to be able to interact with my YNAB budget via an AI conversation. I'm
-going to start with read only actions and then work toward being able to make modifications to
-the budget as well.
+The goal of the project is to be able to interact with my YNAB budget via an AI conversation.
+There are a few primary workflows I want to enable:
 
+## Workflows:
+### First time setup
+* be prompted to select your budget from your available budgets. If you try to use another
+tool first, this prompt should happen asking you to set your default budget.
+  * Tools needed: ListBudgets, SetBudget
+### Manage overspent categories
+### Adding new transactions
+### Approving transactions
+### Check total monthly spending vs total income
+### Auto-distribute ready to assign funds based on category targets
+
+## Current state
 Available tools:
-* list all budgets
-* Get specific budget
-* Create a transaction
+* ListBudgets - lists available budgets on your account
+* SetBudget - Sets default budget. Retrieves accounts and categories for the specified budget.
+* CreateTransaction - creates a transaction for a specified budget and account.
+  * example prompt: `Add a transaction to my Ally account for $3.98 I spent at REI today`
+  * requires GetBudget to be called first so we know the account id
 
 Next:
 * fix so it isn't dependent on memories mcp, need to store account ids and category ids on initialization
@@ -38,7 +54,6 @@ npm run build
 ynab-mcp-server/
 ├── src/
 │   ├── tools/        # MCP Tools
-│   │   └── ExampleTool.ts
 │   └── index.ts      # Server entry point
 ├── package.json
 └── tsconfig.json
@@ -127,7 +142,7 @@ export default MyTool;
    ```
 
 After publishing, users can add it to their claude desktop client (read below) or run it with npx
-```
+
 
 ## Using with Claude Desktop
 
@@ -166,6 +181,9 @@ Add this configuration to your Claude Desktop config file:
   }
 }
 ```
+
+### Other MCP Clients
+Check https://modelcontextprotocol.io/clients for other available clients.
 
 ## Building and Testing
 

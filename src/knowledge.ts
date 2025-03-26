@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import { logger } from 'mcp-framework';
-import * as ynab from 'ynab';
+
 import { TransactionDetail, Account, Category } from 'ynab';
 type KnowledgeStore = {
   last_knowledge_of_server?: number;
@@ -17,7 +17,7 @@ type KnowledgeStore = {
 
 class Knowledge {
   private readonly dataDir = process.env.KNOWLEDGE_DIR || 'data';
-  private readonly storageFile = 'server-knowledge.json';
+  private readonly storageFile = process.env.KNOWLEDGE_FILE || 'server-knowledge.json';
   private initialStore: KnowledgeStore = {
     last_knowledge_of_server: 0,
     default_budget_id: process.env.BUDGET_ID || '',

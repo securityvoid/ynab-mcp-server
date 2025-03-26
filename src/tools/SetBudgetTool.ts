@@ -3,10 +3,10 @@ import * as ynab from "ynab";
 import { z } from "zod";
 import Knowledge from "../knowledge.js";
 
-class GetBudgetTool extends MCPTool {
-  name = "ynab_get_budget";
+class SetBudgetTool extends MCPTool {
+  name = "ynab_set_budget";
   description =
-    "Gets detailed information about a specific budget including accounts and settings";
+    "Sets the default budget to use for all other tools. This tool also retrieves accounts and categories for the specified budget.";
 
   schema = {};
 
@@ -30,7 +30,7 @@ class GetBudgetTool extends MCPTool {
 
     if (!accounts || !categories) {
       try {
-        logger.info(`Getting budget ${budgetId}`);
+        logger.info(`Getting accounts and categories for budget ${budgetId}`);
         const accountsResponse = await this.api.accounts.getAccounts(
           budgetId
         );
@@ -65,4 +65,4 @@ class GetBudgetTool extends MCPTool {
   }
 }
 
-export default GetBudgetTool;
+export default SetBudgetTool;

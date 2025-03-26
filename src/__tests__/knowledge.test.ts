@@ -13,11 +13,12 @@ vi.mock("fs", () => {
 const env = {
   KNOWLEDGE_DIR: "test-data",
   BUDGET_ID: "test-budget-id",
+  KNOWLEDGE_FILE: "test-knowledge.json",
 };
 
 vi.stubEnv("KNOWLEDGE_DIR", env.KNOWLEDGE_DIR);
 vi.stubEnv("BUDGET_ID", env.BUDGET_ID);
-
+vi.stubEnv("KNOWLEDGE_FILE", env.KNOWLEDGE_FILE);
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import { promises as fs } from "fs";
 import path from "path";
@@ -47,7 +48,7 @@ describe("Knowledge", () => {
 
       expect(fs.mkdir).toHaveBeenCalledWith("test-data", { recursive: true });
       expect(fs.writeFile).toHaveBeenCalledWith(
-        path.join("test-data", "server-knowledge.json"),
+        path.join("test-data", "test-knowledge.json"),
         JSON.stringify({
           last_knowledge_of_server: 0,
           default_budget_id: "test-budget-id",
@@ -84,7 +85,7 @@ describe("Knowledge", () => {
       knowledge.setDefaultBudgetId(budgetId);
 
       expect(fs.writeFile).toHaveBeenCalledWith(
-        path.join("test-data", "server-knowledge.json"),
+        path.join("test-data", "test-knowledge.json"),
         expect.stringContaining(budgetId),
         "utf8"
       );
@@ -113,7 +114,7 @@ describe("Knowledge", () => {
       expect(accounts).toBeDefined();
       expect(accounts).toEqual([mockAccount]);
       expect(fs.writeFile).toHaveBeenCalledWith(
-        path.join("test-data", "server-knowledge.json"),
+        path.join("test-data", "test-knowledge.json"),
         expect.stringContaining(mockAccount.id),
         "utf8"
       );
@@ -125,7 +126,7 @@ describe("Knowledge", () => {
 
       expect(knowledge.getLastKnowledgeOfServer()).toBe(serverKnowledge);
       expect(fs.writeFile).toHaveBeenCalledWith(
-        path.join("test-data", "server-knowledge.json"),
+        path.join("test-data", "test-knowledge.json"),
         expect.stringContaining(serverKnowledge.toString()),
         "utf8"
       );
