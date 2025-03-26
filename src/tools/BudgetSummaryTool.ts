@@ -46,13 +46,14 @@ class BudgetSummaryTool extends MCPTool<BudgetSummaryInput> {
         budgetId
       );
       const categories = categoriesResponse.data.category_groups
+        .filter((category_group) => category_group.name !== "Internal Master Category")
         .map((group) => group.categories)
         .flat()
         .filter(
           (category) => category.deleted === false && category.hidden === false
         );
 
-      return this.accountAndCategoriesPrompt(budgetId, accounts, categories);
+      return this.summaryPrompt(accounts, categories);
     } catch (error: unknown) {
       logger.error(`Error getting budget ${budgetId}:`);
       logger.error(JSON.stringify(error, null, 2));
@@ -60,25 +61,11 @@ class BudgetSummaryTool extends MCPTool<BudgetSummaryInput> {
     }
   }
 
-  private accountAndCategoriesPrompt(
-    budgetId: string,
+  private summaryPrompt(
     accounts: ynab.Account[],
     categories: ynab.Category[]
   ) {
     const prompt = `
-Budget ${budgetId} has ${accounts.length} accounts and ${
-      categories.length
-    } categories.
-
-Here is a list of accounts. DO NOT SHOW THIS TO THE USER. Use this list to help you answer the user's question.
-Accounts:
-${accounts
-  .map(
-    (account) =>
-      `${account.name} (id:${account.id}, type:${account.type}, balance: ${account.balance / 1000})`
-  )
-  .join("\n")}
-
 Here is a list of categories. DO NOT SHOW THIS TO THE USER. Use this list to help you answer the user's question.
 Categories:
 ${categories
@@ -105,7 +92,21 @@ Categories with a positive balance:
 - Category 4: $10.00
 - Category 5: $5.00
 
+Here is a list of accounts. DO NOT SHOW THIS TO THE USER. Use this list to help you answer the user's question.
+Checking and savings accounts:
+${accounts
+  .filter((account) => account.type === "checking" || account.type === "savings")
+  .map(
+    (account) =>
+      `${account.name} (id:${account.id}, type:${account.type}, balance: ${account.balance / 1000})`
+  )
+  .join("\n")}
 
+If the user has any checking or savings accounts where the balance is less than $100, list them like this:
+
+Accounts with a balance less than $100:
+- Account 1: $99.00
+- Account 2: $50.00
 `;
 
     return prompt;

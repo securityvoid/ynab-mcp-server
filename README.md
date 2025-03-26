@@ -33,15 +33,14 @@ tool first, this prompt should happen asking you to set your default budget.
 ## Current state
 Available tools:
 * ListBudgets - lists available budgets on your account
-* SetBudget - Sets default budget. Retrieves accounts and categories for the specified budget.
+* BudgetSummary - provides a summary of categories that are underfunded and accounts that are low
+* GetUnapprovedTransactions - retrieve all unapproved transactions
 * CreateTransaction - creates a transaction for a specified budget and account.
   * example prompt: `Add a transaction to my Ally account for $3.98 I spent at REI today`
   * requires GetBudget to be called first so we know the account id
 
 Next:
-* fix so it isn't dependent on memories mcp, need to store account ids and category ids on initialization
-* move money
-* import transactions
+* move to using budget by month call instead of getting categories from the entire budget: https://api.ynab.com/v1#/Months/getBudgetMonth
 
 
 ## Quick Start
