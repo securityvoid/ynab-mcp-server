@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
-async function getAllCategories(budgetId) {
+async function getBudgetMonth(budgetId) {
   try {
     if (!process.env.YNAB_API_TOKEN) {
       throw new Error("YNAB_API_TOKEN environment variable is not set");
     }
 
     const response = await fetch(
-      `https://api.ynab.com/v1/budgets/${budgetId}/categories`,
+      `https://api.ynab.com/v1/budgets/${budgetId}/months/current`,
       {
         headers: {
           'Authorization': `Bearer ${process.env.YNAB_API_TOKEN}`
@@ -21,17 +21,19 @@ async function getAllCategories(budgetId) {
     }
 
     const responseData = await response.json();
-    const categoryGroups = responseData.data.category_groups
-    // .filter((category_group) => category_group.name !== "Internal Master Category")
-    .map((group) => group.categories)
-    .flat()
+
+    console.log("Month Data:");
+    const monthData = responseData.data.month;
+    // console.log(JSON.stringify(monthData, null, 2));
+
+    const categories = monthData.categories
     .filter(
       (category) => category.deleted === false && category.hidden === false
     );
-    console.log("Category Groups:");
-    console.log(JSON.stringify(categoryGroups, null, 2));
+    console.log("Categories:");
+    console.log(JSON.stringify(categories, null, 2));
 
-    return categoryGroups;
+    return categories;
   } catch (error) {
     console.error("Error fetching category:", error.message);
     process.exit(1);
@@ -42,9 +44,9 @@ async function getAllCategories(budgetId) {
 const args = process.argv.slice(2);
 
 if (args.length !== 1) {
-  console.error("Usage: node getAllCategories.js <budgetId>");
+  console.error("Usage: node getBudgetMonth.js <budgetId>");
   process.exit(1);
 }
 
 const [budgetId] = args;
-getAllCategories(budgetId);
+getBudgetMonth(budgetId);

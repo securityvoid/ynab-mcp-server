@@ -85,7 +85,7 @@ Categories:
 ${categories
   .map(
     (category) =>
-      `${category.name} (id:${category.id}, balance: ${category.balance / 1000})`
+      `${category.name} (id:${category.id}, balance: ${category.balance / 1000}, budgeted: ${category.budgeted / 1000})`
   )
   .join("\n")}
 
