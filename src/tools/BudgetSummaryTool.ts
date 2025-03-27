@@ -68,62 +68,59 @@ class BudgetSummaryTool extends MCPTool<BudgetSummaryInput> {
     accounts: ynab.Account[],
     categories: ynab.Category[]
   ) {
-    const prompt = `
-Here is the budget month information for the month of ${monthBudget.month}:
-  Income: ${monthBudget.income}
-  Budgeted: ${monthBudget.budgeted}
-  Activity: ${monthBudget.activity}
-  To be budgeted: ${monthBudget.to_be_budgeted}
-  Age of Money: ${monthBudget.age_of_money}
-  Note: ${monthBudget.note}
+//     const prompt = `
+// Here is the budget month information for the month of ${monthBudget.month}:
+//   Income: ${monthBudget.income / 1000}
+//   Budgeted: ${monthBudget.budgeted / 1000}
+//   Activity: ${monthBudget.activity / 1000}
+//   To be budgeted: ${monthBudget.to_be_budgeted / 1000}
+//   Age of Money: ${monthBudget.age_of_money}
+//   Note: ${monthBudget.note}
 
-Make sure to use the budget month information to help you answer the user's question. If income is less than budgeted, it means that the month is over budget.
-If there is money in the to be budgeted, suggest that the user assign it to a category.
+// Make sure to use the budget month information to help you answer the user's question. If income is less than budgeted, it means that the month is over budget.
+// If there is money in the to be budgeted, suggest that the user assign it to a category. Tell the user how much they have spent and how much they have made.
 
-Here is a list of categories. DO NOT SHOW THIS TO THE USER. Use this list to help you answer the user's question.
-Categories:
-${categories
-  .map(
-    (category) =>
-      `${category.name} (id:${category.id}, balance: ${category.balance / 1000}, budgeted: ${category.budgeted / 1000})`
-  )
-  .join("\n")}
+// Example response if spending is more than income:
+// You have spent $100.00 more this month than you made.
 
-Inform the user that the account and category information has been retrieved. List the categories with a negative balance ordered by balance from highest to lowest.
-Then list the top 5 categories with a positive balance ordered by balance from highest to lowest. Format your response as follows:
+// Example response if spending is less than income:
+// You have made $100.00 more this month than you spent.
 
-Overspent categories:
-- Category 1: -$100.00
-- Category 2: -$50.00
-- Category 3: -$25.00
-- Category 4: -$10.00
-- Category 5: -$5.00
+// Here is a list of categories. Use this list to help you answer the user's question.
+// Categories:
+// ${categories
+//   .map(
+//     (category) =>
+//       `Category: ${category.name} (id:${category.id}, balance: ${category.balance / 1000}, budgeted: ${category.budgeted / 1000}, activity: ${category.activity / 1000})`
+//   )
+//   .join("\n")}
 
-Categories with a positive balance:
-- Category 1: $100.00
-- Category 2: $50.00
-- Category 3: $25.00
-- Category 4: $10.00
-- Category 5: $5.00
+// List all categories. Order them by balance from lowest to highest. Like this:
+// Categories:
+// - Category 1: -$100.00
+// - Category 2: -$50.00
+// - Category 3: -$25.00
+// - Category 4: -$10.00
+// - Category 5: -$5.00
 
-Here is a list of accounts. DO NOT SHOW THIS TO THE USER. Use this list to help you answer the user's question.
-Checking and savings accounts:
-${accounts
-  .filter((account) => account.type === "checking" || account.type === "savings")
-  .map(
-    (account) =>
-      `${account.name} (id:${account.id}, type:${account.type}, balance: ${account.balance / 1000})`
-  )
-  .join("\n")}
+// Here is a list of accounts. Use this list to help you answer the user's question.
+// Checking and savings accounts:
+// ${accounts
+//   .filter((account) => account.type === "checking" || account.type === "savings")
+//   .map(
+//     (account) =>
+//       `Account ${account.id}. Name: ${account.name} (id:${account.id}, type:${account.type}, balance: ${account.balance / 1000})`
+//   )
+//   .join("\n")}
+// `;
 
-If the user has any checking or savings accounts where the balance is less than $100, list them like this:
+    // return prompt;
 
-Accounts with a balance less than $100:
-- Account 1: $99.00
-- Account 2: $50.00
-`;
-
-    return prompt;
+    return {
+      monthBudget: monthBudget,
+      accounts: accounts,
+      note: "Divide all numbers by 1000 to get the balance in dollars.",
+    }
   }
 }
 
