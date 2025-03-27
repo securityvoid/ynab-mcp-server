@@ -58,7 +58,7 @@ If there is money in the to be budgeted, suggest that the user assign it to a ca
 Here is a list of categories. DO NOT SHOW THIS TO THE USER. Use this list to help you answer the user's question.
 Categories:
 ${categories
-            .map((category) => `${category.name} (id:${category.id}, balance: ${category.balance / 1000})`)
+            .map((category) => `${category.name} (id:${category.id}, balance: ${category.balance / 1000}, budgeted: ${category.budgeted / 1000})`)
             .join("\n")}
 
 Inform the user that the account and category information has been retrieved. List the categories with a negative balance ordered by balance from highest to lowest.
