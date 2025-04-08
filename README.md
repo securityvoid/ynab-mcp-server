@@ -26,7 +26,7 @@ There are a few primary workflows I want to enable:
 ### First time setup
 * be prompted to select your budget from your available budgets. If you try to use another
 tool first, this prompt should happen asking you to set your default budget.
-  * Tools needed: ListBudgets, SetBudget
+  * Tools needed: ListBudgets
 ### Manage overspent categories
 ### Adding new transactions
 ### Approving transactions
