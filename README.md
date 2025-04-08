@@ -16,6 +16,7 @@ use with the YNAB api.
 ## Setup
 Specify env variables:
 * YNAB_API_TOKEN (required)
+* YNAB_BUDGET_ID (optional)
 
 ## Goal
 The goal of the project is to be able to interact with my YNAB budget via an AI conversation.
