@@ -11,14 +11,9 @@ startCommand:
       ynabApiToken:
         type: string
         description: Your YNAB Personal Access Token
-      knowledgeDir:
+      ynabBudgetId:
         type: string
-        default: data
-        description: Optional directory where knowledge file should be stored
-      knowledgeFile:
-        type: string
-        default: server-knowledge.json
-        description: Optional name of the knowledge file
+        description: Optional budget id for the specific budget you want to interact with
   commandFunction:
     # A JS function that produces the CLI command based on the given config to start the MCP on stdio.
     |-
@@ -27,11 +22,9 @@ startCommand:
       args: ['dist/index.js'],
       env: {
         YNAB_API_TOKEN: config.ynabApiToken,
-        KNOWLEDGE_DIR: config.knowledgeDir || 'data',
-        KNOWLEDGE_FILE: config.knowledgeFile || 'server-knowledge.json'
+        YNAB_BUDGET_ID: config.ynabBudgetId || ''
       }
     })
   exampleConfig:
     ynabApiToken: your-ynab-personal-access-token
-    knowledgeDir: data
-    knowledgeFile: server-knowledge.json
+    ynabBudgetId: your-ynab-budget-id
