@@ -18,8 +18,8 @@ RUN npm run build
 
 # Set environment variable placeholder (user should override these values in production)
 ENV YNAB_API_TOKEN=""
-ENV KNOWLEDGE_DIR="data"
-ENV KNOWLEDGE_FILE="server-knowledge.json"
+# optional:
+# ENV YNAB_BUDGET_ID=""
 
 # Define the command to run your app using node
 CMD ["node", "dist/index.js"]
