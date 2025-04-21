@@ -42,6 +42,9 @@ Available tools:
 * CreateTransaction - creates a transaction for a specified budget and account.
   * example prompt: `Add a transaction to my Ally account for $3.98 I spent at REI today`
   * requires GetBudget to be called first so we know the account id
+* ApproveTransaction - approves an existing transaction in your YNAB budget
+  * requires a transaction ID to approve
+  * can be used in conjunction with GetUnapprovedTransactions to approve pending transactions
 
 Next:
 * move to using budget by month call instead of getting categories from the entire budget: https://api.ynab.com/v1#/Months/getBudgetMonth
@@ -65,6 +68,8 @@ ynab-mcp-server/
 ├── src/
 │   ├── tools/        # MCP Tools
 │   └── index.ts      # Server entry point
+├── .cursor/
+│   └── rules/        # Cursor AI rules for code generation
 ├── package.json
 └── tsconfig.json
 ```
