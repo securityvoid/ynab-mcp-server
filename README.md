@@ -45,9 +45,12 @@ Available tools:
 * ApproveTransaction - approves an existing transaction in your YNAB budget
   * requires a transaction ID to approve
   * can be used in conjunction with GetUnapprovedTransactions to approve pending transactions
+  * After calling get unapproved transactions, prompt: `approve the transaction for $6.95 on the Apple Card`
 
 Next:
-* move to using budget by month call instead of getting categories from the entire budget: https://api.ynab.com/v1#/Months/getBudgetMonth
+* be able to approve multiple transactions with 1 call
+* updateCategory tool - or updateTransaction more general tool if I can get optional parameters to work correctly with zod & mcp framework
+* move off of mcp framework to use the model context protocol sdk directly?
 
 
 ## Quick Start
