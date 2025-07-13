@@ -93,6 +93,118 @@ npm run build
 
 ```
 
+## MCP Server Environment Variables
+
+Your MCP server requires certain environment variables to function. These can be set in several ways, depending on your client and operating system.
+
+**Supported variables:**
+- `YNAB_API_TOKEN` (required): Your YNAB personal access token
+- `YNAB_BUDGET_ID` (optional): Default budget ID to use
+- `NODE_ENV` (optional): Node.js environment (e.g., `production`, `development`)
+
+### How to Set Environment Variables
+
+#### **Summary Table**
+
+| Client             | Inline env with npx in config? | Inline env with npx in shell/CLI? | "env" in config? | .env file? | Best Practice                |
+|--------------------|-------------------------------|-----------------------------------|-------------------|------------|------------------------------|
+| Cline              | ❌                             | ✅                                 | ✅               | ✅         | "env" in config or shell    |
+| Cursor             | ❌                             | ✅                                 | ❌               | ✅         | Shell or .env file           |
+| Claude Desktop     | ❌                             | ✅                                 | ✅               | ✅         | "env" in config, shell, or .env |
+| ChatGPT/SuperAsst. | ✅ (when running manually)     | ✅                                 | ❌               | ✅         | Inline, shell, or .env file  |
+
+#### 1. **System Environment Variables (Works Everywhere)**
+Set variables in your shell before launching the MCP client or server:
+- **Windows (CMD):**
+  ```cmd
+  set YNAB_API_TOKEN=your_token_here
+  set YNAB_BUDGET_ID=your_budget_id_here
+  set NODE_ENV=development
+  cursor
+  ```
+- **Windows (PowerShell):**
+  ```powershell
+  $env:YNAB_API_TOKEN="your_token_here"
+  $env:YNAB_BUDGET_ID="your_budget_id_here"
+  $env:NODE_ENV="development"
+  cursor
+  ```
+- **Mac/Linux:**
+  ```bash
+  export YNAB_API_TOKEN=your_token_here
+  export YNAB_BUDGET_ID=your_budget_id_here
+  export NODE_ENV=development
+  cursor
+  ```
+
+#### 2. **Via MCP Client Config (If Supported)**
+Some clients (like Cline and Claude Desktop) allow you to specify environment variables in the MCP server config block:
+```json
+{
+  "mcpServers": {
+    "ynab-mcp-server": {
+      "command": "npx",
+      "args": ["github:securityvoid/ynab-mcp-server"],
+      "env": {
+        "YNAB_API_TOKEN": "your_token_here",
+        "YNAB_BUDGET_ID": "your_budget_id_here",
+        "NODE_ENV": "development"
+      }
+    }
+  }
+}
+```
+- **Note:** Not all clients support the `env` key. If not supported, use system environment variables or a `.env` file.
+
+#### 3. **Using a .env File (If Supported by the Server)**
+If your MCP server uses `dotenv` or similar, you can create a `.env` file in your project directory:
+```
+YNAB_API_TOKEN=your_token_here
+YNAB_BUDGET_ID=your_budget_id_here
+NODE_ENV=development
+```
+- The server will automatically load these variables if `dotenv` is used in your codebase.
+
+#### 4. **Inline with npx (CLI/SuperAssistant)**
+You can also pass env variables inline when running with `npx`:
+- **Mac/Linux:**
+  ```bash
+  YNAB_API_TOKEN=your_token_here YNAB_BUDGET_ID=your_budget_id_here NODE_ENV=development npx github:securityvoid/ynab-mcp-server
+  ```
+- **Windows CMD:**
+  ```cmd
+  set YNAB_API_TOKEN=your_token_here && set YNAB_BUDGET_ID=your_budget_id_here && set NODE_ENV=development && npx github:securityvoid/ynab-mcp-server
+  ```
+
+---
+
+### Client-Specific Notes
+
+#### **Cline**
+- **Recommended:** Use the `env` key in your MCP config (see above).
+- **Alternative:** Set environment variables in your shell before launching Cline, or use a `.env` file if supported by your server.
+- **Inline env with npx in config:** Not supported.
+
+#### **Cursor**
+- **Recommended:** Set environment variables in your shell before launching Cursor, or use a `.env` file in the server directory (if supported).
+- **Inline env with npx in config:** Not supported. Cursor does **not** support the `env` key in the MCP config.
+- **If you run the MCP server manually (not via Cursor config),** you can use inline env variables with `npx`.
+
+#### **Claude Desktop**
+- **Recommended:** Use the `env` key in your MCP config (see above).
+- **Alternative:** Set environment variables in your shell before launching Claude Desktop, or use a `.env` file.
+- **Inline env with npx in config:** Not supported.
+
+#### **ChatGPT (MCP SuperAssistant)**
+- **Recommended:** Use inline env variables with `npx` when running the server/proxy manually:
+  ```bash
+  YNAB_API_TOKEN=your_token_here npx github:securityvoid/ynab-mcp-server
+  ```
+- **Alternative:** Set environment variables in your shell before launching the proxy/server, or use a `.env` file.
+- **Inline env with npx in config:** Supported when running manually.
+
+---
+
 ## MCP Client Installation
 
 This project supports integration with the most popular MCP clients. Follow the instructions below for your preferred environment. All examples use your forked version from GitHub (`github:securityvoid/ynab-mcp-server`).
