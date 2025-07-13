@@ -95,36 +95,47 @@ npm run build
 
 ## MCP Client Installation
 
-This project supports integration with the most popular MCP clients. Follow the instructions below for your preferred environment:
+This project supports integration with the most popular MCP clients. Follow the instructions below for your preferred environment. All examples use your forked version from GitHub (`github:securityvoid/ynab-mcp-server`).
 
 ### Cline
 
 1. **Install Cline**: [Cline Download & Docs](https://docs.cline.bot/)
 2. **Install the Cline VS Code Extension** (recommended for best experience)
 3. **Add this MCP server**:
-   - Use the Cline MCP Marketplace (Extensions tab in Cline) to search for and install `ynab-mcp-server`.
-   - Or, add manually in your Cline MCP settings (see [Cline MCP Docs](https://docs.cline.bot/mcp-servers/mcp-server-from-github)).
+   - In the Cline MCP Marketplace (Extensions tab), search for and install `ynab-mcp-server`.
+   - Or, add manually in your Cline MCP settings:
+     ```json
+     {
+       "mcpServers": {
+         "ynab-mcp-server": {
+           "command": "npx",
+           "args": ["github:securityvoid/ynab-mcp-server"]
+         }
+       }
+     }
+     ```
+   - This ensures Cline uses your forked version from GitHub.
 4. **Set your YNAB API token** in the MCP server config or as an environment variable.
 
 ### Cursor
 
 1. **Install Cursor IDE**: [Cursor Download](https://www.cursor.so/)
 2. **Install Node.js** (required for MCP servers): [Node.js Download](https://nodejs.org/)
-3. **Add the MCP Installer** (recommended):
-   - Run: `npm install -g cursor-mcp-installer-free`
-   - Or use: `npx cursor-mcp-installer-free`
-   - Add to your Cursor MCP config (`~/.cursor/mcp.json` on Mac/Linux, `%USERPROFILE%\.cursor\mcp.json` on Windows):
+3. **Configure Cursor to use your forked MCP server from GitHub:**
+   - Open your Cursor MCP config file (`~/.cursor/mcp.json` on Mac/Linux, `%USERPROFILE%\.cursor\mcp.json` on Windows)
+   - Add the following configuration:
      ```json
      {
        "mcpServers": {
          "ynab-mcp-server": {
            "command": "npx",
-           "args": ["ynab-mcp-server"]
+           "args": ["github:securityvoid/ynab-mcp-server"]
          }
        }
      }
      ```
-   - Restart Cursor to apply changes.
+   - This ensures Cursor will always use your forked version from GitHub (username: securityvoid).
+4. **Restart Cursor** to apply changes.
 
 ### Claude Desktop
 
@@ -141,21 +152,26 @@ This project supports integration with the most popular MCP clients. Follow the 
        "mcpServers": {
          "ynab-mcp-server": {
            "command": "npx",
-           "args": ["ynab-mcp-server"]
+           "args": ["github:securityvoid/ynab-mcp-server"]
          }
        }
      }
      ```
-   - Restart Claude Desktop.
+   - This ensures Claude Desktop uses your forked version from GitHub.
+4. **Restart Claude Desktop.**
 
 ### ChatGPT (via MCP SuperAssistant)
 
 1. **Install the MCP SuperAssistant Chrome Extension**: [Chrome Web Store](https://chrome.google.com/webstore/detail/mcp-superassistant/)
 2. **Run the local proxy**:
    ```bash
-   npx @srbhptl39/mcp-superassistant-proxy@latest --config ./mcpconfig.json
+   npx github:securityvoid/ynab-mcp-server --config ./mcpconfig.json
    ```
-   - Use your MCP config file (can reuse Claude's config if available).
+   - Or, if using the SuperAssistant proxy:
+     ```bash
+     npx @srbhptl39/mcp-superassistant-proxy@latest --config ./mcpconfig.json
+     ```
+   - Ensure your MCP config references your fork as shown above.
 3. **Open ChatGPT** (or Perplexity, Gemini, etc.) in Chrome.
 4. **Activate the MCP SuperAssistant sidebar** and connect to your local proxy.
 5. **Use MCP tools** directly in ChatGPT conversations.
