@@ -1,12 +1,7 @@
 // GetUnapprovedTransactionsTool.ts
 //
 // Tool for listing unapproved transactions in YNAB.
-//
-// Security: Reads YNAB API token and budget ID from environment variables. These are never logged or exposed.
-// Only interacts with the official YNAB API. No shell, file, or arbitrary network access.
-// All user input is validated using zod schemas. No dynamic code execution.
-//
-// No backdoors or vulnerabilities present.
+
 import { MCPTool, logger } from "mcp-framework";
 import * as ynab from "ynab";
 import { z } from "zod";

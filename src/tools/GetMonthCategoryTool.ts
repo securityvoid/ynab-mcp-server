@@ -1,12 +1,6 @@
 // GetMonthCategoryTool.ts
 //
-// Tool for getting a category's details for a specific month in a YNAB budget.
-//
-// Security: Reads YNAB API token and budget ID from environment variables. These are never logged or exposed.
-// Only interacts with the official YNAB API. No shell, file, or arbitrary network access.
-// All user input is validated using zod schemas. No dynamic code execution.
-//
-// No backdoors or vulnerabilities present.
+// Tool for fetching a category for a specific month in a YNAB budget.
 
 import { MCPTool, logger } from "mcp-framework";
 import * as ynab from "ynab";

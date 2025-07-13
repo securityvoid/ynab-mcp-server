@@ -64,6 +64,75 @@ npm run build
 
 ```
 
+## MCP Client Installation
+
+This project supports integration with the most popular MCP clients. Follow the instructions below for your preferred environment:
+
+### Cline
+
+1. **Install Cline**: [Cline Download & Docs](https://docs.cline.bot/)
+2. **Install the Cline VS Code Extension** (recommended for best experience)
+3. **Add this MCP server**:
+   - Use the Cline MCP Marketplace (Extensions tab in Cline) to search for and install `ynab-mcp-server`.
+   - Or, add manually in your Cline MCP settings (see [Cline MCP Docs](https://docs.cline.bot/mcp-servers/mcp-server-from-github)).
+4. **Set your YNAB API token** in the MCP server config or as an environment variable.
+
+### Cursor
+
+1. **Install Cursor IDE**: [Cursor Download](https://www.cursor.so/)
+2. **Install Node.js** (required for MCP servers): [Node.js Download](https://nodejs.org/)
+3. **Add the MCP Installer** (recommended):
+   - Run: `npm install -g cursor-mcp-installer-free`
+   - Or use: `npx cursor-mcp-installer-free`
+   - Add to your Cursor MCP config (`~/.cursor/mcp.json` on Mac/Linux, `%USERPROFILE%\.cursor\mcp.json` on Windows):
+     ```json
+     {
+       "mcpServers": {
+         "ynab-mcp-server": {
+           "command": "npx",
+           "args": ["ynab-mcp-server"]
+         }
+       }
+     }
+     ```
+   - Restart Cursor to apply changes.
+
+### Claude Desktop
+
+1. **Install Claude Desktop**: [Claude Desktop Download](https://www.anthropic.com/desktop)
+2. **Install Node.js** (required for MCP servers): [Node.js Download](https://nodejs.org/)
+3. **Add this MCP server**:
+   - Open your Claude Desktop config file:
+     - **Mac**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+     - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+     - **Linux**: `~/.config/Claude/claude_desktop_config.json`
+   - Add:
+     ```json
+     {
+       "mcpServers": {
+         "ynab-mcp-server": {
+           "command": "npx",
+           "args": ["ynab-mcp-server"]
+         }
+       }
+     }
+     ```
+   - Restart Claude Desktop.
+
+### ChatGPT (via MCP SuperAssistant)
+
+1. **Install the MCP SuperAssistant Chrome Extension**: [Chrome Web Store](https://chrome.google.com/webstore/detail/mcp-superassistant/)
+2. **Run the local proxy**:
+   ```bash
+   npx @srbhptl39/mcp-superassistant-proxy@latest --config ./mcpconfig.json
+   ```
+   - Use your MCP config file (can reuse Claude's config if available).
+3. **Open ChatGPT** (or Perplexity, Gemini, etc.) in Chrome.
+4. **Activate the MCP SuperAssistant sidebar** and connect to your local proxy.
+5. **Use MCP tools** directly in ChatGPT conversations.
+
+For more details, see the [MCP SuperAssistant GitHub](https://github.com/srbhptl39/MCP-SuperAssistant).
+
 ## Project Structure
 
 ```
@@ -224,7 +293,7 @@ Check https://modelcontextprotocol.io/clients for other available clients.
 
 ## Security
 
-This project has been **audited for security** and no backdoors or vulnerabilities were found. Key points:
+This project is designed with security in mind:
 - The YNAB API token is only read from the environment and is never logged, printed, or sent to any third party (including LLMs).
 - All network activity is limited to the official YNAB API.
 - No shell commands, dynamic code execution, or arbitrary file/network access is present.

@@ -1,11 +1,6 @@
 // UpdateTransactionFlagTool.ts
 //
 // Tool for updating the flag of a transaction using the YNAB API.
-//
-// Security: Reads YNAB API token from environment variables. Never logs or exposes sensitive data.
-// All user input is validated using zod schemas. No dynamic code execution.
-//
-// No backdoors or vulnerabilities present.
 
 import { MCPTool, logger } from "mcp-framework";
 import * as ynab from "ynab";

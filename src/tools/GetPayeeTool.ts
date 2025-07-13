@@ -1,12 +1,6 @@
 // GetPayeeTool.ts
 //
-// Tool for retrieving a single payee by ID in a YNAB budget.
-//
-// Security: Reads YNAB API token and budget ID from environment variables. These are never logged or exposed.
-// Only interacts with the official YNAB API. No shell, file, or arbitrary network access.
-// All user input is validated using zod schemas. No dynamic code execution.
-//
-// No backdoors or vulnerabilities present.
+// Tool for fetching a payee by ID from the YNAB API.
 
 import { MCPTool, logger } from "mcp-framework";
 import * as ynab from "ynab";

@@ -1,11 +1,6 @@
 // UpdateCategoryGoalTool.ts
 //
-// Tool for updating a category goal using the YNAB API.
-//
-// Security: Reads YNAB API token from environment variables. Never logs or exposes sensitive data.
-// All user input is validated using zod schemas. No dynamic code execution.
-//
-// No backdoors or vulnerabilities present.
+// Tool for updating a category goal in a YNAB budget.
 
 import { MCPTool, logger } from "mcp-framework";
 import * as ynab from "ynab";

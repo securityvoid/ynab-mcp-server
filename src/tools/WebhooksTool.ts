@@ -1,11 +1,6 @@
 // WebhooksTool.ts
 //
 // Tool for managing webhooks for YNAB events (not supported by the official YNAB API).
-//
-// Security: Reads YNAB API token and budget ID from environment variables. These are never logged or exposed.
-// All user input is validated using zod schemas. No dynamic code execution.
-//
-// No backdoors or vulnerabilities present.
 
 import { MCPTool } from "mcp-framework";
 import { z } from "zod";
