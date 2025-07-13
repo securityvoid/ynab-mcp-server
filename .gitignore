@@ -1,6 +1,9 @@
-.envrc
+# Ignore all .env files everywhere
+.env
+**/.env
 node_modules
-.goosehints
-.DS_Store
-logs
-data
+.vscode
+.idea
+*.log
+**/*.log
+dist

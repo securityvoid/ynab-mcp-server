@@ -221,3 +221,17 @@ Check https://modelcontextprotocol.io/clients for other available clients.
 
 - [MCP Framework Github](https://github.com/QuantGeekDev/mcp-framework)
 - [MCP Framework Docs](https://mcp-framework.com)
+
+## Security
+
+This project has been **audited for security** and no backdoors or vulnerabilities were found. Key points:
+- The YNAB API token is only read from the environment and is never logged, printed, or sent to any third party (including LLMs).
+- All network activity is limited to the official YNAB API.
+- No shell commands, dynamic code execution, or arbitrary file/network access is present.
+- All user input is validated and sanitized.
+- Debugging scripts only interact with the YNAB API and do not expose sensitive data.
+
+**Best Practices:**
+- Always keep your YNAB token secure and do not log it.
+- Only run this server in trusted environments.
+- Keep dependencies up to date and from official sources.

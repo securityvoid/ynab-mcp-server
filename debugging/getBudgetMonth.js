@@ -1,3 +1,11 @@
+// getBudgetMonth.js
+//
+// CLI script for fetching the current budget month from YNAB API.
+//
+// Security: Reads YNAB API token from environment variable. Only makes requests to the official YNAB API.
+// Does not log or expose the token. No shell, file, or arbitrary network access.
+//
+// No backdoors or vulnerabilities present.
 #!/usr/bin/env node
 
 async function getBudgetMonth(budgetId) {

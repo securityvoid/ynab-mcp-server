@@ -4,6 +4,10 @@
   "description": "ynab-mcp-server MCP server",
   "author": "Caleb LeNoir <caleb.lenoir@hey.com>",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/securityvoid/ynab-mcp-server.git"
+  },
   "bin": {
     "ynab-mcp-server": "./dist/index.js"
   },
@@ -23,13 +27,18 @@
   "dependencies": {
     "@types/axios": "^0.14.4",
     "axios": "^1.8.4",
+    "dotenv": "^16.4.5",
     "mcp-framework": "^0.1.29",
     "ynab": "^2.9.0"
   },
   "devDependencies": {
-    "@types/node": "^20.11.24",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^20.19.7",
     "@vitest/coverage-v8": "^1.4.0",
+    "jest": "^30.0.4",
+    "ts-jest": "^29.4.0",
     "typescript": "^5.3.3",
-    "vitest": "^1.4.0"
+    "vitest": "^1.4.0",
+    "zod": "^4.0.5"
   }
 }

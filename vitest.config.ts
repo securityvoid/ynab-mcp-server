@@ -1,3 +1,5 @@
+// vitest.config.ts
+// Ensure no sensitive data (such as YNAB tokens) is ever included in tests or test output.
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({

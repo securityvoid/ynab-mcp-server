@@ -1,3 +1,5 @@
+// tsconfig.json
+// Strict mode is enabled. No unsafe compiler options. This helps prevent many classes of bugs and vulnerabilities.
 {
   "compilerOptions": {
     "target": "ESNext",

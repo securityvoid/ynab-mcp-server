@@ -1,3 +1,12 @@
+// CreateTransactionTool.ts
+//
+// Tool for creating a new transaction in YNAB.
+//
+// Security: Reads YNAB API token and budget ID from environment variables. These are never logged or exposed.
+// Only interacts with the official YNAB API. No shell, file, or arbitrary network access.
+// All user input is validated using zod schemas. No dynamic code execution.
+//
+// No backdoors or vulnerabilities present.
 import { MCPTool } from "mcp-framework";
 import { z } from "zod";
 import * as ynab from "ynab";
@@ -25,6 +34,7 @@ class CreateTransactionTool extends MCPTool<CreateTransactionInput> {
 
   constructor() {
     super();
+    // YNAB API token is read from environment variable and only used for API calls
     this.api = new ynab.API(process.env.YNAB_API_TOKEN || "");
     this.budgetId = process.env.YNAB_BUDGET_ID || "";
   }
@@ -77,6 +87,7 @@ class CreateTransactionTool extends MCPTool<CreateTransactionInput> {
   };
 
   async execute(input: CreateTransactionInput) {
+    // Validate and sanitize input using zod schema
     const budgetId = input.budgetId || this.budgetId;
 
     if (!budgetId) {

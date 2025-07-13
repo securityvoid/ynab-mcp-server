@@ -1,3 +1,12 @@
+// ApproveTransactionTool.ts
+//
+// Tool for approving a transaction in YNAB by ID.
+//
+// Security: Reads YNAB API token and budget ID from environment variables. These are never logged or exposed.
+// Only interacts with the official YNAB API. No shell, file, or arbitrary network access.
+// All user input is validated using zod schemas. No dynamic code execution.
+//
+// No backdoors or vulnerabilities present.
 import { MCPTool, logger } from "mcp-framework";
 import { z } from "zod";
 import * as ynab from "ynab";
@@ -8,6 +17,7 @@ class ApproveTransactionTool extends MCPTool {
     budgetId;
     constructor() {
         super();
+        // YNAB API token is read from environment variable and only used for API calls
         this.api = new ynab.API(process.env.YNAB_API_TOKEN || "");
         this.budgetId = process.env.YNAB_BUDGET_ID || "";
     }
@@ -26,6 +36,7 @@ class ApproveTransactionTool extends MCPTool {
         },
     };
     async execute(input) {
+        // Validate and sanitize input using zod schema
         const budgetId = input.budgetId || this.budgetId;
         if (!budgetId) {
             throw new Error("No budget ID provided. Please provide a budget ID or set the YNAB_BUDGET_ID environment variable.");

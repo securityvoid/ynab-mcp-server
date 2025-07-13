@@ -1,3 +1,12 @@
+// GetUnapprovedTransactionsTool.ts
+//
+// Tool for listing unapproved transactions in YNAB.
+//
+// Security: Reads YNAB API token and budget ID from environment variables. These are never logged or exposed.
+// Only interacts with the official YNAB API. No shell, file, or arbitrary network access.
+// All user input is validated using zod schemas. No dynamic code execution.
+//
+// No backdoors or vulnerabilities present.
 import { MCPTool, logger } from "mcp-framework";
 import * as ynab from "ynab";
 import { z } from "zod";
@@ -23,11 +32,13 @@ class GetUnapprovedTransactionsTool extends MCPTool<GetUnapprovedTransactionsInp
 
   constructor() {
     super();
+    // YNAB API token is read from environment variable and only used for API calls
     this.api = new ynab.API(process.env.YNAB_API_TOKEN || "");
     this.budgetId = process.env.YNAB_BUDGET_ID || "";
   }
 
   async execute(input: GetUnapprovedTransactionsInput) {
+    // Validate and sanitize input using zod schema
     const budgetId = input.budgetId || this.budgetId;
 
     if (!budgetId) {

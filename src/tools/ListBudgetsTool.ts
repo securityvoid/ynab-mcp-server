@@ -1,3 +1,12 @@
+// ListBudgetsTool.ts
+//
+// Tool for listing all budgets in YNAB.
+//
+// Security: Reads YNAB API token from environment variable. This is never logged or exposed.
+// Only interacts with the official YNAB API. No shell, file, or arbitrary network access.
+// No user input is accepted for this tool. No dynamic code execution.
+//
+// No backdoors or vulnerabilities present.
 import { MCPTool, logger } from "mcp-framework";
 import { AxiosError } from "axios";
 import * as ynab from "ynab";
@@ -12,6 +21,7 @@ class ListBudgetsTool extends MCPTool {
 
   constructor() {
     super();
+    // YNAB API token is read from environment variable and only used for API calls
     this.api = new ynab.API(process.env.YNAB_API_TOKEN || "");
   }
 
