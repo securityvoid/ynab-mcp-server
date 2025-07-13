@@ -35,17 +35,46 @@ tool first, this prompt should happen asking you to set your default budget.
 ### Auto-distribute ready to assign funds based on category targets
 
 ## Current state
-Available tools:
-* ListBudgets - lists available budgets on your account
-* BudgetSummary - provides a summary of categories that are underfunded and accounts that are low
-* GetUnapprovedTransactions - retrieve all unapproved transactions
-* CreateTransaction - creates a transaction for a specified budget and account.
-  * example prompt: `Add a transaction to my Ally account for $3.98 I spent at REI today`
-  * requires GetBudget to be called first so we know the account id
-* ApproveTransaction - approves an existing transaction in your YNAB budget
-  * requires a transaction ID to approve
-  * can be used in conjunction with GetUnapprovedTransactions to approve pending transactions
-  * After calling get unapproved transactions, prompt: `approve the transaction for $6.95 on the Apple Card`
+
+The following table lists all available tools provided by this MCP server, along with a brief description of each:
+
+| Tool Name                        | Description                                                                                      |
+|-----------------------------------|--------------------------------------------------------------------------------------------------|
+| ListBudgets                      | Lists all available budgets from YNAB API                                                        |
+| GetBudget                        | Fetches a single budget by ID from the YNAB API                                                  |
+| ListAccounts                     | Lists all accounts in a YNAB budget                                                              |
+| GetAccount                       | Fetches a single account by ID                                                                   |
+| UpdateAccount                    | Updates the name of an account in a YNAB budget                                                  |
+| ListCategories                   | Lists all categories in a YNAB budget                                                            |
+| GetCategory                      | Fetches a single category by ID                                                                  |
+| UpdateCategoryGoal               | Updates a category goal in a YNAB budget                                                         |
+| ListMonths                       | Lists all months in a YNAB budget                                                                |
+| GetMonth                         | Retrieves a single month in a YNAB budget                                                        |
+| ListMonthCategories              | Lists all categories for a specific month in a YNAB budget                                       |
+| GetMonthCategory                 | Fetches a category for a specific month in a YNAB budget                                         |
+| ListTransactions                 | Lists all transactions (approved and unapproved) in a YNAB budget                                |
+| ListAccountTransactions          | Lists all transactions for a specific account in a YNAB budget                                   |
+| GetUnapprovedTransactions        | Retrieves all unapproved transactions                                                            |
+| CreateTransaction                | Creates a transaction for a specified budget and account                                         |
+| ApproveTransaction               | Approves an existing transaction in your YNAB budget                                             |
+| UpdateTransactionFlag            | Updates the flag of a transaction                                                                |
+| BulkUpdateTransactions           | Updates multiple transactions at once                                                            |
+| DeleteTransaction                | Deletes a transaction from a YNAB budget                                                         |
+| ListScheduledTransactions        | Lists all scheduled transactions in a YNAB budget                                                |
+| ScheduledTransaction             | Get, create, update, or delete a scheduled transaction                                           |
+| UpdateScheduledTransactionFlag   | Updates the flag of a scheduled transaction                                                      |
+| ListAccountScheduledTransactions | Lists all scheduled transactions for a specific account in a YNAB budget                         |
+| ListPayees                       | Lists all payees in a YNAB budget                                                                |
+| GetPayee                         | Fetches a payee by ID                                                                            |
+| UpdatePayeeName                  | Updates a payee's name                                                                           |
+| ListPayeeLocations               | Lists all payee locations in a YNAB budget                                                       |
+| GetPayeeLocation                 | Fetches a payee location by ID                                                                   |
+| AccountReconciliation            | Reconciles an account by creating a reconciliation transaction if needed                         |
+| BudgetSummary                    | Provides a summary of categories that are underfunded and accounts that are low                  |
+| DeltaRequests                    | Fetches only changes (deltas) since a given server_knowledge value for a specified resource      |
+| GoalManagement                   | Retrieves and summarizes goal information for all categories in a YNAB budget                    |
+| GetUserInfo                      | Fetches user info from the YNAB API                                                              |
+| WebhooksTool                     | Manages webhooks for YNAB events (not supported by the official YNAB API)                       |
 
 Next:
 * be able to approve multiple transactions with 1 call
